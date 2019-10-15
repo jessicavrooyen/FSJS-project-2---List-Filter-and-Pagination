@@ -75,19 +75,6 @@ function searchStudents(searchInput) {
   const searchValue = document.querySelector('input').value;
   const searchResults = [];
 
-  //add no results message if no names are found
-  const noResults = document.querySelectorAll('p');
-  console.log(noResults);
-  if (noResults !== 'null') {
-    for (let i = 0; i < noResults.length; i++) {
-      noResults[i].remove();
-    }
-  }
-  // check if pagination already exists, if so, remove it (not removing this class adds duplicate paginations)
-  const isPaginationActive = document.querySelector('.pagination');
-  if (isPaginationActive) {
-    isPaginationActive.remove();
-  }
   //loop through student list
   for (let i = 0; i < studentNames.length; i++) {
     const query = searchInput.toLowerCase();
@@ -101,6 +88,19 @@ function searchStudents(searchInput) {
     } else {
       studentList[i].style.display = 'none';
     }
+  }
+  //add no results message if no names are found
+  const noResults = document.querySelectorAll('p');
+  console.log(noResults);
+  if (noResults !== 'null') {
+    for (let i = 0; i < noResults.length; i++) {
+      noResults[i].remove();
+    }
+  }
+  // check if pagination already exists, if so, remove it (not removing this class adds duplicate paginations)
+  const isPaginationActive = document.querySelector('.pagination');
+  if (isPaginationActive) {
+    isPaginationActive.remove();
   }
   // if no names were found to match the input value, show the no results message
   if (searchInput.length === 0) {
