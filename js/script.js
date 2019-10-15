@@ -56,6 +56,73 @@ function appendPageLinks(list) {
   }
 }
 
+//dynamically create and append search bar
+const pageDiv = document.querySelector('.page-header');
+const searchDiv = document.createElement('div');
+searchDiv.className = 'student-search';
+const input = document.createElement('input');
+input.placeholder = 'Search for students...';
+const button = document.createElement('button');
+button.textContent = 'Search';
+
+pageDiv.appendChild(searchDiv);
+searchDiv.appendChild(input);
+searchDiv.appendChild(button);
+
+function searchStudents(searchInput) {
+  //select the student names
+  const studentNames = document.querySelectorAll('h3');
+  const searchValue = document.querySelector('input').value;
+  const searchResults = [];
+
+  //add no results message if no names are found
+  const noResults = document.querySelectorAll('p');
+  console.log(noResults);
+  if (noResults !== 'null') {
+    for (let i = 0; i < noResults.length; i++) {
+      noResults[i].remove();
+    }
+  }
+  // check if pagination already exists, if so, remove it (not removing this class adds duplicate paginations)
+  const isPaginationActive = document.querySelector('.pagination');
+  if (isPaginationActive) {
+    isPaginationActive.remove();
+  }
+  //loop through student list
+  for (let i = 0; i < studentNames.length; i++) {
+    const query = searchInput.toLowerCase();
+    //if results were found, add them to the results array & display the student list names
+    if (studentNames[i].textContent.toLowerCase().includes(query) &&
+      searchInput.length !== 0) {
+      studentNames[i].style.display = 'block';
+      searchResults.push(studentList[i]);
+    } else if (searchInput.length === 0) {
+      showPage(studentList, 1);
+    } else {
+      studentList[i].style.display = 'none';
+    }
+  }
+  // if no names were found to match the input value, show the no results message
+  if (searchInput.length === 0) {
+    appendPageLinks(studentList);
+  } else if (searchResults.length === 0) {
+    const page = document.querySelector('.page');
+    const noNames = document.createElement('p');
+    noNames.textContent = 'No results were found.';
+    noNames.style.color = 'red';
+    page.appendChild(noNames);
+  } else {
+    appendPageLinks(searchResults);
+    showPage(searchResults, 1);
+  }
+}
+
+button.addEventListener('click', () => {
+  searchStudents(input.value);
+});
+input.addEventListener('keyup', () => {
+  searchStudents(input.value);
+});
 
 showPage(studentList, 1);
 appendPageLinks(studentList);
